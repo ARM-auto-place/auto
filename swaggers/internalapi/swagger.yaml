@@ -1,0 +1,229 @@
+openapi: 3.0.0
+servers:
+    - {}
+paths:
+    /internalAutoAPI/getListMyCars:
+        post:
+            tags:
+                - InternalAutoAPI
+            summary: Получить список обьявлений пользователя
+            description: Получить список обьявлений пользователя
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - id
+                                - jsonrpc
+                                - result
+                            properties:
+                                id:
+                                    example: 1
+                                    oneOf:
+                                        - type: number
+                                        - type: string
+                                          format: uuid
+                                jsonrpc:
+                                    type: string
+                                    example: "2.0"
+                                params:
+                                    $ref: '#/components/schemas/requestInternalAutoAPIGetListMyCars'
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - type: object
+                                      required:
+                                        - id
+                                        - jsonrpc
+                                        - result
+                                      properties:
+                                        id:
+                                            example: 1
+                                            oneOf:
+                                                - type: number
+                                                - type: string
+                                                  format: uuid
+                                        jsonrpc:
+                                            type: string
+                                            example: "2.0"
+                                        result:
+                                            $ref: '#/components/schemas/responseInternalAutoAPIGetListMyCars'
+                                    - type: object
+                                      required:
+                                        - id
+                                        - jsonrpc
+                                        - error
+                                      properties:
+                                        error:
+                                            type: object
+                                            properties:
+                                                code:
+                                                    type: number
+                                                    format: int32
+                                                    example: -32603
+                                                data:
+                                                    type: object
+                                                    nullable: true
+                                                message:
+                                                    type: string
+                                                    example: not found
+                                        id:
+                                            example: 1
+                                            oneOf:
+                                                - type: number
+                                                - type: string
+                                                  format: uuid
+                                        jsonrpc:
+                                            type: string
+                                            example: "2.0"
+    /internalAutoAPI/getListMyFavoriteCars:
+        post:
+            tags:
+                - InternalAutoAPI
+            summary: Получить список обьявлений пользователя
+            description: Получить список обьявлений пользователя
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            required:
+                                - id
+                                - jsonrpc
+                                - result
+                            properties:
+                                id:
+                                    example: 1
+                                    oneOf:
+                                        - type: number
+                                        - type: string
+                                          format: uuid
+                                jsonrpc:
+                                    type: string
+                                    example: "2.0"
+                                params:
+                                    $ref: '#/components/schemas/requestInternalAutoAPIGetListMyFavoriteCars'
+            responses:
+                "200":
+                    description: Successful operation
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                    - type: object
+                                      required:
+                                        - id
+                                        - jsonrpc
+                                        - result
+                                      properties:
+                                        id:
+                                            example: 1
+                                            oneOf:
+                                                - type: number
+                                                - type: string
+                                                  format: uuid
+                                        jsonrpc:
+                                            type: string
+                                            example: "2.0"
+                                        result:
+                                            $ref: '#/components/schemas/responseInternalAutoAPIGetListMyFavoriteCars'
+                                    - type: object
+                                      required:
+                                        - id
+                                        - jsonrpc
+                                        - error
+                                      properties:
+                                        error:
+                                            type: object
+                                            properties:
+                                                code:
+                                                    type: number
+                                                    format: int32
+                                                    example: -32603
+                                                data:
+                                                    type: object
+                                                    nullable: true
+                                                message:
+                                                    type: string
+                                                    example: not found
+                                        id:
+                                            example: 1
+                                            oneOf:
+                                                - type: number
+                                                - type: string
+                                                  format: uuid
+                                        jsonrpc:
+                                            type: string
+                                            example: "2.0"
+components:
+    schemas:
+        models.Cars:
+            type: object
+            required:
+                - carId
+                - mark
+                - model
+                - kilometre
+                - price
+                - images
+            properties:
+                carId:
+                    type: string
+                    format: uuid
+                images:
+                    type: object
+                kilometre:
+                    type: number
+                    format: uint64
+                mark:
+                    type: string
+                model:
+                    type: string
+                price:
+                    type: number
+                    format: uint64
+        requestInternalAutoAPIGetListMyCars:
+            type: object
+            required:
+                - userID
+            properties:
+                userID:
+                    type: string
+                    format: uuid
+            description: Получить список обьявлений пользователя
+        requestInternalAutoAPIGetListMyFavoriteCars:
+            type: object
+            required:
+                - userID
+            properties:
+                userID:
+                    type: string
+                    format: uuid
+            description: Получить список обьявлений пользователя
+        responseInternalAutoAPIGetListMyCars:
+            type: object
+            required:
+                - cars
+            properties:
+                cars:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/models.Cars'
+                    nullable: true
+            description: Получить список обьявлений пользователя
+        responseInternalAutoAPIGetListMyFavoriteCars:
+            type: object
+            required:
+                - cars
+            properties:
+                cars:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/models.Cars'
+                    nullable: true
+            description: Получить список обьявлений пользователя
