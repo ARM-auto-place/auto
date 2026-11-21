@@ -1,0 +1,288 @@
+openapi: 3.0.0
+info:
+    title: Auto API
+    version: 0.0.1
+servers:
+    - {}
+paths:
+    /api/auto/v1/car:
+        post:
+            tags:
+                - AutoApi
+            summary: создание обьявления
+            description: создание обьявления
+            parameters:
+                - in: header
+                  name: X-User-Id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/requestAutoApiCreateAuto'
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "402":
+                    description: Payment Required
+                "403":
+                    description: Forbidden
+                "404":
+                    description: Not Found
+                "405":
+                    description: Method Not Allowed
+                "409":
+                    description: Conflict
+                "422":
+                    description: Unprocessable Entity
+                "429":
+                    description: Too Many Requests
+                "500":
+                    description: Internal Server Error
+    /api/auto/v1/car/info:
+        get:
+            tags:
+                - AutoApi
+            summary: Получение полной информации об автомобиле
+            description: Получение полной информации об автомобиле
+            parameters:
+                - in: header
+                  name: X-User-Id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+                - in: query
+                  name: carID
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "402":
+                    description: Payment Required
+                "403":
+                    description: Forbidden
+                "404":
+                    description: Not Found
+                "405":
+                    description: Method Not Allowed
+                "409":
+                    description: Conflict
+                "422":
+                    description: Unprocessable Entity
+                "429":
+                    description: Too Many Requests
+                "500":
+                    description: Internal Server Error
+    /api/auto/v1/cars:
+        get:
+            tags:
+                - AutoApi
+            summary: Получение списка автомобилей
+            description: Получение списка автомобилей
+            parameters:
+                - in: header
+                  name: X-User-Id
+                  required: true
+                  schema:
+                    type: string
+                    format: uuid
+            responses:
+                "200":
+                    description: Successful operation
+                "400":
+                    description: Bad Request
+                "401":
+                    description: Unauthorized
+                "402":
+                    description: Payment Required
+                "403":
+                    description: Forbidden
+                "404":
+                    description: Not Found
+                "405":
+                    description: Method Not Allowed
+                "409":
+                    description: Conflict
+                "422":
+                    description: Unprocessable Entity
+                "429":
+                    description: Too Many Requests
+                "500":
+                    description: Internal Server Error
+components:
+    schemas:
+        models.CarInfo:
+            type: object
+            required:
+                - carId
+                - sellerID
+                - mark
+                - model
+                - buildYear
+                - power
+                - typePower
+                - owners
+                - condition
+                - steeringWheel
+                - color
+                - descriptions
+                - createdAt
+                - updatedAt
+                - release
+                - images
+                - vin
+                - kilometre
+                - price
+                - isUserCar
+                - isFavorite
+            properties:
+                buildYear:
+                    type: int16
+                carId:
+                    type: string
+                    format: uuid
+                color:
+                    oneOf:
+                        - type: string
+                        - nullable: true
+                condition:
+                    oneOf:
+                        - type: string
+                        - nullable: true
+                createdAt:
+                    type: string
+                    format: date-time
+                descriptions:
+                    type: string
+                images:
+                    type: object
+                isFavorite:
+                    oneOf:
+                        - type: boolean
+                        - nullable: true
+                isUserCar:
+                    oneOf:
+                        - type: boolean
+                        - nullable: true
+                kilometre:
+                    oneOf:
+                        - type: number
+                          format: uint64
+                        - nullable: true
+                mark:
+                    oneOf:
+                        - type: string
+                        - nullable: true
+                model:
+                    oneOf:
+                        - type: string
+                        - nullable: true
+                owners:
+                    oneOf:
+                        - type: number
+                          format: int32
+                        - nullable: true
+                power:
+                    type: number
+                    format: int32
+                price:
+                    oneOf:
+                        - type: number
+                          format: uint64
+                        - nullable: true
+                release:
+                    type: boolean
+                sellerID:
+                    type: string
+                    format: uuid
+                steeringWheel:
+                    oneOf:
+                        - type: string
+                        - nullable: true
+                typePower:
+                    type: string
+                updatedAt:
+                    type: string
+                    format: date-time
+                vin:
+                    type: string
+        models.Cars:
+            type: object
+            required:
+                - carId
+                - mark
+                - model
+                - kilometre
+                - price
+                - images
+            properties:
+                carId:
+                    type: string
+                    format: uuid
+                images:
+                    type: object
+                kilometre:
+                    type: number
+                    format: uint64
+                mark:
+                    type: string
+                model:
+                    type: string
+                price:
+                    type: number
+                    format: uint64
+        requestAutoApiCreateAuto:
+            type: object
+            required:
+                - params
+            properties:
+                params:
+                    $ref: '#/components/schemas/models.CarInfo'
+            description: создание обьявления
+        requestAutoApiGetCarInfo:
+            type: object
+        requestAutoApiGetCars:
+            type: object
+        responseAutoApiCreateAuto:
+            type: object
+            required:
+                - carID
+            properties:
+                carID:
+                    type: string
+                    format: uuid
+            description: создание обьявления
+        responseAutoApiGetCarInfo:
+            type: object
+            required:
+                - cars
+            properties:
+                cars:
+                    $ref: '#/components/schemas/models.CarInfo'
+            description: Получение полной информации об автомобиле
+        responseAutoApiGetCars:
+            type: object
+            required:
+                - cars
+            properties:
+                cars:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/models.Cars'
+                    nullable: true
+            description: Получение списка автомобилей
